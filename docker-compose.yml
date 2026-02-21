@@ -1,0 +1,40 @@
+version: "3"
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend # Build from the backend Dockerfile
+    command: python3 manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./backend:/app # Mount the backend directory to the container
+    ports:
+      - "8000:8000" # Expose backend on port 8000
+    depends_on:
+      - db # Ensure the database is running before the backend
+    environment:
+      - DB_HOST=db # Database host for backend to connect
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend # Build from the frontend Dockerfile
+    command: npm start
+    volumes:
+      - ./frontend:/app # Mount the frontend directory to the container
+    ports:
+      - "3000:3000" # Expose frontend on port 3000
+    depends_on:
+      - backend # Ensure the backend is running before frontend
+
+  db:
+    image: postgres:latest # PostgreSQL or use the DB you need
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Persistent data for DB
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: meetingsdb # Database name for your app
+
+volumes:
+  postgres_data: # Volume to persist database data

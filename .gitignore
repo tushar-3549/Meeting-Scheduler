@@ -1,0 +1,46 @@
+# Node modules (React dependencies)
+node_modules/
+
+# Build directory (React build files)
+build/
+
+# Python bytecode files
+__pycache__/
+*.pyc
+*.pyo
+
+# Django specific files
+*.sqlite3
+*.log
+*.pot
+*.pyc
+*.pyo
+*.db
+*.db-journal
+
+# Django migrations
+*/migrations/
+
+# Virtual environment directories
+venv/
+env/
+.venv/
+.env/
+
+# VS Code settings
+.vscode/
+
+# MacOS Finder settings
+.DS_Store
+
+# IDE files (e.g., JetBrains, PyCharm)
+.idea/
+
+# Environment variables (Do not include sensitive information in git)
+.env
+
+# Other config files you don't want to track
+*.log
+*.bak
+*.swp
+*.swo
