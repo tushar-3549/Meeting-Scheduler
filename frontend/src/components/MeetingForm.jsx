@@ -26,25 +26,27 @@ const MeetingForm = ({ onMeetingCreated }) => {
   return (
     <form onSubmit={handleSubmit}>
       <h2>Create Meeting</h2>
-      <div>
-        <label>Title:</label>
+      <div className="form-group">
+        <label>Title</label>
         <input
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          placeholder="e.g. Weekly Sync"
           required
         />
       </div>
-      <div>
-        <label>Description:</label>
+      <div className="form-group">
+        <label>Description</label>
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          placeholder="What's this meeting about?"
           required
         />
       </div>
-      <div>
-        <label>Start Time:</label>
+      <div className="form-group">
+        <label>Start Time</label>
         <input
           type="datetime-local"
           value={startTime}
@@ -52,8 +54,8 @@ const MeetingForm = ({ onMeetingCreated }) => {
           required
         />
       </div>
-      <div>
-        <label>End Time:</label>
+      <div className="form-group">
+        <label>End Time</label>
         <input
           type="datetime-local"
           value={endTime}

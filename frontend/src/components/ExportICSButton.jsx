@@ -15,7 +15,11 @@ const ExportICSButton = ({ meetingId }) => {
     }
   };
 
-  return <button onClick={handleExport}>Export as ICS</button>;
+  return (
+    <button className="ics-button" onClick={handleExport}>
+      📅 Export as ICS
+    </button>
+  );
 };
 
 export default ExportICSButton;

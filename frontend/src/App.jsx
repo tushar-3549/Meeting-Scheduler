@@ -11,16 +11,20 @@ const App = () => {
   };
 
   return (
-    <div>
+    <div className="app-container">
       <h1>Meeting Scheduler</h1>
-      {!meetingId ? (
-        <MeetingForm onMeetingCreated={handleMeetingCreated} />
-      ) : (
-        <>
-          <ParticipantForm meetingId={meetingId} />
-          <ExportICSButton meetingId={meetingId} />
-        </>
-      )}
+      <div className="glass-card">
+        {!meetingId ? (
+          <MeetingForm onMeetingCreated={handleMeetingCreated} />
+        ) : (
+          <>
+            <ParticipantForm meetingId={meetingId} />
+            <div className="export-section">
+              <ExportICSButton meetingId={meetingId} />
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 };
