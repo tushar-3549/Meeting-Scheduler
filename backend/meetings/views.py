@@ -1,12 +1,43 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
 from .models import Meeting, Participant
 from .utils import check_conflict, generate_ics, send_email_notification
 import json
 
+@csrf_exempt
+def signup(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        username = data.get('username')
+        password = data.get('password')
+        email = data.get('email')
+        
+        if User.objects.filter(username=username).exists():
+            return JsonResponse({'error': 'Username already exists'}, status=400)
+        
+        user = User.objects.create_user(username=username, password=password, email=email)
+        return JsonResponse({'message': 'User created successfully', 'username': user.username})
+
+@csrf_exempt
+def login_view(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        username = data.get('username')
+        password = data.get('password')
+        
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return JsonResponse({'message': 'Login successful', 'username': user.username})
+        else:
+            return JsonResponse({'error': 'Invalid credentials'}, status=401)
+
 # View to create a new meeting
 @csrf_exempt
 def create_meeting(request):
+
     if request.method == "POST":
         data = json.loads(request.body)
         title = data.get('title')
@@ -53,7 +84,54 @@ def add_participant(request):
 
         return JsonResponse({'message': 'Participant added successfully and email sent!'})
 
+import csv
+import io
+
+@csrf_exempt
+def bulk_add_participants(request):
+    if request.method == "POST":
+        meeting_id = request.POST.get('meeting_id')
+        csv_file = request.FILES.get('file')
+
+        if not csv_file or not meeting_id:
+            return JsonResponse({'error': 'Meeting ID and CSV file are required'}, status=400)
+
+        try:
+            meeting = Meeting.objects.get(id=meeting_id)
+        except Meeting.DoesNotExist:
+            return JsonResponse({'error': 'Meeting not found'}, status=404)
+
+        decoded_file = csv_file.read().decode('utf-8')
+        io_string = io.StringIO(decoded_file)
+        reader = csv.reader(io_string)
+        
+        added_count = 0
+        errors = []
+
+        for row in reader:
+            if not row: continue
+            email = row[0].strip()
+            
+            if Participant.objects.filter(meeting=meeting, email=email).exists():
+                errors.append(f'{email}: Already registered')
+                continue
+
+            if check_conflict(email, meeting.start_time, meeting.end_time):
+                errors.append(f'{email}: Conflict detected')
+                continue
+
+            Participant.objects.create(meeting=meeting, email=email)
+            send_email_notification(email, meeting.title, meeting.start_time)
+            added_count += 1
+
+        return JsonResponse({
+            'message': f'Successfully added {added_count} participants',
+            'added_count': added_count,
+            'errors': errors
+        })
+
 # View to export a meeting to an ICS file
+
 @csrf_exempt
 def export_ics(request, meeting_id):
     if request.method == "GET":
