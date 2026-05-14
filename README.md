@@ -182,12 +182,12 @@ Here are the available API endpoints:
 
 
 ## Screenshoot
-![signup](screenshots/signup.png)
-![login](screenshots/login.png)
-![create_meeting](screenshots/create_meeting.png)
-![add_participant](screenshots/add_participant.png)
-![email](screenshots/email.png)
-![export_ics](screenshots/export_ics.png)
+![signup](screenshoot/signup.png)
+![login](screenshoot/login.png)
+![create_meeting](screenshoot/create_meeting.png)
+![add_participant](screenshoot/add_participant.png)
+![email](screenshoot/email.png)
+![export_ics](screenshoot/export_ics.png)
 
 ## Architecture
 
