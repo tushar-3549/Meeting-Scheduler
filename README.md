@@ -1,16 +1,40 @@
 # Meeting Scheduler Application
 
-This is a meeting scheduler application that allows users to create meetings, add participants, and export meeting information as an ICS file. The application is built with frontend and backend both.
+A modern, glassmorphic web application for scheduling meetings, managing participants, and exporting calendar invites. Built with **Django** and **React**.
+
+## Features
+
+### Authentication
+- **Secure Admin Access**: Built-in login and signup system for office administrators.
+- **Session Persistence**: Stay logged in across browser refreshes.
+
+### Meeting Management
+- **Smart Scheduling**: Separate date and time pickers for precise scheduling.
+- **Validation**: Automatic checks to ensure meeting end times are after start times.
+- **Export to ICS**: Download your scheduled meetings as `.ics` files for easy import into Google Calendar, Outlook, or Apple Calendar.
+
+### Participant Management
+- **Individual Invitations**: Add participants one-by-one via email.
+- **Bulk CSV Upload**: Upload a CSV file to invite dozens of participants instantly.
+- **Conflict Detection**: Backend validation to prevent scheduling participants for overlapping meetings.
+- **Email Notifications**: Automated email invites sent to participants upon addition.
+
+### UI/UX
+- **Glassmorphism Design**: High-end aesthetic with blurred backgrounds, vibrant gradients, and sleek cards.
+- **Responsive Layout**: Fully functional on desktops, tablets, and smartphones.
+- **Micro-animations**: Smooth transitions and hover effects for a premium feel.
 
 ---
 
-## Technologies Used
+## Tech Stack
 
-- **Frontend**: React.js, Axios
+- **Frontend**: React (Hooks, Axios, Vanilla CSS)
 - **Backend**: Django, Python
 - **Database**: SQLite (for development)
-- **Calendar Export**: ics (ICS file generation)
+- **Calendar Export**: ICS file generation
 - **Email**: SMTP
+- **Auth**: Django Built-in User Authentication
+- **Styling**: Custom CSS (Glassmorphism, CSS Grid/Flexbox)
 
 ---
 
@@ -31,13 +55,13 @@ Before you begin, make sure you have the following installed:
 
 1. Navigate to the backend folder:
 
-```bash
-cd backend
-```
+   ```bash
+   cd backend
+   ```
 
 2. Set up a virtual environment:
 
-```bash
+   ```bash
 python3 -m venv venv
 ```
 
@@ -63,16 +87,16 @@ pip install -r requirements.txt
 
 5. Run database migrations:
 
-```bash
+   ```bash
 python3 manage.py migrate
 python3 manage.py makemigration
-```
+   ```
 
 6. Start the Django development server:
 
-```bash
+   ```bash
 python3 manage.py runserver
-```
+   ```
 
 - The backend will be available at `http://localhost:8000`
 
@@ -138,25 +162,34 @@ Here are the available API endpoints:
 
 1. Navigate to the **frontend** folder:
 
-```bash
-cd frontend
-```
+   ```bash
+   cd frontend
+   ```
 
 2. Install the necessary dependencies:
 
-```bash
-npm install
-```
+   ```bash
+   npm install
+   ```
 
 3. Start the React development server:
 
-```bash
-npm start
-```
+   ```bash
+   npm start
+   ```
 
 - The frontend will be available at `http://localhost:3000`
 
-## Architecture, Design Decisions, and Assumptions
+
+## Screenshoot
+![signup](screenshots/signup.png)
+![login](screenshots/login.png)
+![create_meeting](screenshots/create_meeting.png)
+![add_participant](screenshots/add_participant.png)
+![email](screenshots/email.png)
+![export_ics](screenshots/export_ics.png)
+
+## Architecture
 
 #### **Architecture**:
 
@@ -173,31 +206,4 @@ The application follows a **Client-Server architecture** with a **React.js** fro
    - Uses **SQLite** as the database for storing meetings and participants' information.
    - The backend handles **email notifications** via SMTP (using Gmail or other services).
 
-#### **Design Decisions**:
 
-- **Simple RESTful API**: Using simple HTTP methods (`POST`, `GET`) for CRUD operations.
-- **React frontend** for dynamic UI rendering and API calls.
-- **Django backend** to handle business logic and database interactions.
-- **SMTP** for email notifications, avoiding third-party email services.
-
-#### **Assumptions**:
-
-- Meetings can only be scheduled with unique emails for participants (no duplicate participants).
-- All API requests are handled securely with **CSRF** tokens (disabled in development for simplicity).
-
----
-
-## Database Schema Explanation
-
-The database consists of two main models:
-
-1. **Meeting Model**:
-   - **title** (CharField): Title of the meeting.
-   - **description** (TextField): Description of the meeting.
-   - **start_time** (DateTimeField): Start time of the meeting.
-   - **end_time** (DateTimeField): End time of the meeting.
-
-2. **Participant Model**:
-   - **meeting** (ForeignKey): Foreign key to the Meeting model.
-   - **email** (EmailField): Email of the participant.
-   - **status** (CharField): Status of the participant
