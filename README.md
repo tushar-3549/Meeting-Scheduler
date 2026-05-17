@@ -62,8 +62,8 @@ Before you begin, make sure you have the following installed:
 2. Set up a virtual environment:
 
    ```bash
-python3 -m venv venv
-```
+   python3 -m venv venv
+   ```
 
 3. Activate the virtual environment:
 
